@@ -1,3 +1,13 @@
+本文是在基于官方knative的基础上进行安装，因为官方yaml中涉及太多的gcr.io镜像和配置文件中也包含gcr.io，便于国内用户进行研究学习而进行替换为可拉取镜像的yaml文件。其中主要是替换镜像的操作。
+
+直接使用替换好的官方yaml文件请移步[knative-image](https://github.com/huisebug/knative-yaml)
+
+记录如下操作
+
+knativev0.6.0官方yaml文件[knative官方github](https://github.com/knative/)
+[knative官方安装方式](https://knative.dev/docs/install/knative-with-any-k8s/)
+
+##官方下载yaml地址
 https://github.com/knative/serving/releases/download/v0.6.0/serving.yaml 
 https://github.com/knative/build/releases/download/v0.6.0/build.yaml https://github.com/knative/eventing/releases/download/v0.6.0/release.yaml 
 https://github.com/knative/serving/releases/download/v0.6.0/monitoring.yaml 
@@ -5,7 +15,7 @@ https://github.com/knative/eventing-sources/releases/download/v0.6.0/eventing-so
 https://raw.githubusercontent.com/knative/serving/v0.6.0/third_party/config/build/clusterrole.yaml
 
 
-#yaml文件下载py
+#yaml文件下载py脚本
 ```shell
 cat <<EOF | python -
 
@@ -29,10 +39,11 @@ for url in yamlurl:
 EOF
 ```
 
-抓取yaml中的所有镜像地址，建立image文件夹及生成Dockerfile
-build.yaml
+#抓取yaml中的所有镜像地址，建立image文件夹及生成Dockerfile
 
-其中包含对应镜像列表
+##build.yaml
+
+###其中包含对应镜像列表
 ['gcr.io/knative-releases/github.com/knative/build/cmd/creds-init@sha256:101f537b53b895b28b84ac3c74ede7d250845e24c51c26516873d8ccb23168ce']
 ['gcr.io/knative-releases/github.com/knative/build/cmd/git-init@sha256:ce2c17308e9cb81992be153861c359a0c9e5f69c501a490633c8fe54ec992d53']
 ['gcr.io/cloud-builders/gcs-fetcher']
@@ -43,7 +54,7 @@ build.yaml
 ['gcr.io/knative-releases/github.com/knative/build/cmd/controller@sha256:6a762848a46786cb481f5870787133e0d5e15615f8d54a5ba50d86b8315a58eb']
 ['gcr.io/knative-releases/github.com/knative/build/cmd/webhook@sha256:8f0bbc50b63f368c9959acab87838c6986691c28d424847459f3526bf97f8a3e']
 
-py
+###py内容
 
 ```shell
 cat <<EOF | python -
@@ -68,14 +79,17 @@ with open('build.yaml', 'r') as myfile:
 
 EOF
 ```
-clusterrole.yaml没有涉及到镜像
 
-eventing-sources.yaml
+##clusterrole.yaml没有涉及到镜像
+
+##eventing-sources.yaml
+
 其中包含对应镜像列表
 ['gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/github_receive_adapter@sha256:b5d6e12d16d16c6c42ae3d4325a1ef3a8a129dfc97740aa28000c0867edfc4ff']
 ['gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/manager@sha256:99cf1f559f74ae97f271632697ed6e78a3fdd88a155632a57341b0dd6eab6581']
 
-py
+###py内容
+
 ```shell
 cat <<EOF | python -
 
@@ -99,13 +113,15 @@ with open('eventing-sources.yaml', 'r') as myfile:
 
 EOF
 ```
-monitoring.yaml
-其中包含对应镜像列表
+
+##monitoring.yaml
+
+###其中包含对应镜像列表
 ['k8s.gcr.io/elasticsearch:v5.6.4']
 ['k8s.gcr.io/fluentd-elasticsearch:v2.0.4']
 ['k8s.gcr.io/addon-resizer:1.7']
 
-py
+###py内容
 
 ```shell
 cat <<EOF | python -
@@ -131,8 +147,9 @@ with open('monitoring.yaml', 'r') as myfile:
 EOF
 ```
 
-release.yaml
-其中包含对应镜像列表
+##release.yaml
+
+###其中包含对应镜像列表
 [' gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/ingress@sha256:a0acbe69420a67bef520e86aceaa237bf540c15882701c96245a6c4e06413bf6']
 [' gcr.io/knative-releases/github.com/knative/eventing/cmd/broker/filter@sha256:b4da7ce7b12aff2355066ed3237aadcf35df3b1c78db83cc538e6cffa564f208']
 [' gcr.io/knative-releases/github.com/knative/eventing/cmd/controller@sha256:85c010633944c06f4c16253108c2338dba271971b2b5f2d877b8247fa19ff5cb']
@@ -146,7 +163,7 @@ release.yaml
 
 ####注意：因为这个yaml文件存在gcr.io和k8s.gcr.io的镜像，所以需要两次正则筛选
 
-py
+###py内容
 
 ```shell
 cat <<EOF | python -
@@ -173,9 +190,9 @@ for reg in reglist:
 EOF
 ```
 
+##serving.yaml
 
-serving.yaml
-其中包含对应镜像列表
+###其中包含对应镜像列表
 [' gcr.io/knative-releases/github.com/knative/serving/cmd/queue@sha256:1e40c99ff5977daa2d69873fff604c6d09651af1f9ff15aadf8849b3ee77ab45']
 [' gcr.io/knative-releases/github.com/knative/serving/cmd/activator@sha256:f553b6cb7599f2f71190ddc93024952e22f2f55e97a3f38519d4d622fc751651']
 [' gcr.io/knative-releases/github.com/knative/serving/cmd/autoscaler@sha256:3a466eaf05cd505338163322331ee8634c601204250fa639360ae3524756acc3']
@@ -191,7 +208,7 @@ serving.yaml
 ['k8s.gcr.io/fluentd-elasticsearch:v2.0.4']
 ['k8s.gcr.io/addon-resizer:1.7']
 
-py
+###py内容
 
 ```shell
 cat <<EOF | python -
@@ -218,15 +235,14 @@ for reg in reglist:
 EOF
 ```
 
-
 #设置git ssh登录并将各image的Dockerfile推送到不同的分支
 
-生成sshkey
+##生成sshkey
 ```shell
 ssh-keygen -t rsa -C "huisebug@outlook.com"
 ```
 
-shell
+##shell内容
 
 ```shell
 cat >gitpush.sh << EOF
@@ -256,7 +272,7 @@ done
 EOF
 ```
 
-所有分支信息，共27个镜像在gcr.io,其中的quay.io国内是可以拉取到的。
+#所有分支信息，共27个镜像在gcr.io,其中的quay.io国内是可以拉取到的。
 ```shell
 build-cmd-controller
 build-cmd-creds-init
@@ -286,7 +302,8 @@ serving-cmd-networking-istio
 serving-cmd-queue
 serving-cmd-webhook
 ```
-分支对应在gcr.io的镜像，其中quay.io的镜像国内可以拉取，这也是image.txt
+
+#分支对应在gcr.io的镜像，其中quay.io的镜像国内可以拉取，这也是image.txt
 
 ```shell
 cat > image.txt << EOF
@@ -348,7 +365,12 @@ k8s.gcr.io/fluentd-elasticsearch:v2.0.4
 EOF
 ```
 
-yaml文件替换shell脚本
+中间建立github与dockerhub进行自动化构建
+
+最后的操作即将5个yaml文件中的gcr.io镜像替换为我在dockerhub的镜像即可
+
+##yaml文件替换shell脚本
+
 ```shell
 cat >sedyaml.sh << EOF
 
