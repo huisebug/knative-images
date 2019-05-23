@@ -2,14 +2,15 @@
 
 直接使用替换好的官方yaml文件请移步[knative-image](https://github.com/huisebug/knative-yaml)
 
-记录如下操作
+Knative
 
-knativev0.6.0官方yaml文件[knative官方github](https://github.com/knative/)
+[knative官方github](https://github.com/knative/)
 [knative官方安装方式](https://knative.dev/docs/install/knative-with-any-k8s/)
 
 ##官方下载yaml地址
 https://github.com/knative/serving/releases/download/v0.6.0/serving.yaml 
-https://github.com/knative/build/releases/download/v0.6.0/build.yaml https://github.com/knative/eventing/releases/download/v0.6.0/release.yaml 
+https://github.com/knative/build/releases/download/v0.6.0/build.yaml
+https://github.com/knative/eventing/releases/download/v0.6.0/release.yaml 
 https://github.com/knative/serving/releases/download/v0.6.0/monitoring.yaml 
 https://github.com/knative/eventing-sources/releases/download/v0.6.0/eventing-sources.yaml 
 https://raw.githubusercontent.com/knative/serving/v0.6.0/third_party/config/build/clusterrole.yaml
